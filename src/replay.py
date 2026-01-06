@@ -1,6 +1,7 @@
 
 import random
 import torch
+import numpy as np
 
 class ReplayBuffer:
     def __init__(self, capacity):
@@ -18,13 +19,14 @@ class ReplayBuffer:
 
         states, policies, values = zip(*batch)
 
-        boards = []
-        for (board, player) in states:
-            boards.append(board * player)
+        # More efficient: convert to numpy array first, then to tensor
+        boards = np.array([board * player for (board, player) in states], dtype=np.float32)
+        policies_np = np.array(policies, dtype=np.float32)
+        values_np = np.array(values, dtype=np.float32)
 
-        states = torch.tensor(boards, dtype=torch.float32)
-        policies = torch.tensor(policies, dtype=torch.float32)
-        values = torch.tensor(values, dtype=torch.float32)
+        states = torch.from_numpy(boards)
+        policies = torch.from_numpy(policies_np)
+        values = torch.from_numpy(values_np)
 
         return states, policies, values
 

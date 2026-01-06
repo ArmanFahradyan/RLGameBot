@@ -28,7 +28,7 @@ class MCTS:
 
         for action, child in node.children.items():
             u = (
-                child.Q
+                -child.Q  # Negate! Convert to parent's perspective
                 + self.c_puct
                 * child.prior
                 * math.sqrt(node.N) / (1 + child.N)
@@ -75,6 +75,7 @@ class MCTS:
         for node in reversed(path):
             node.N += 1
             node.W += value
+            value = -value
 
 
     def simulate(self, root):
