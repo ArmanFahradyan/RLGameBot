@@ -1,6 +1,7 @@
 
 from src.game import TicTacToe
 from src.connect_four import ConnectFour
+from src.othello import Othello
 
 class GameConfig:
     """Game-specific configuration"""
@@ -17,7 +18,7 @@ class GameConfig:
             self.num_iterations = 50
             self.c_puct = 1.0
             self.hidden_size = 64
-            self.model_save_path = "tictactoe_az.pth"
+            self.model_save_path = "models/tictactoe_az.pth"
             self.temperature_threshold = 5
             
         elif game_name == "connect_four":
@@ -31,9 +32,24 @@ class GameConfig:
             self.replay_buffer_size = 20_000
             self.num_iterations = 200
             self.c_puct = 1.4
-            self.hidden_size = 256  # Increased for better capacity
-            self.model_save_path = "connect_four_az.pth"
+            self.hidden_size = 256
+            self.model_save_path = "models/connect_four_az.pth"
             self.temperature_threshold = 10
+            
+        elif game_name == "othello":
+            self.game = Othello()
+            self.board_size = Othello.BOARD_SIZE
+            self.action_size = Othello.ACTION_SIZE
+            self.mcts_simulations = 100  # Reduced for speed
+            self.num_self_play_games = 25  # Fewer games
+            self.batch_size = 128
+            self.epochs_per_iter = 10
+            self.replay_buffer_size = 50_000
+            self.num_iterations = 5  # Just 5 iterations to get a playable model quickly
+            self.c_puct = 1.4
+            self.hidden_size = 256
+            self.model_save_path = "models/othello_az.pth"
+            self.temperature_threshold = 15
             
         else:
             raise ValueError(f"Unknown game: {game_name}")
@@ -44,4 +60,3 @@ class GameConfig:
 def get_game_config(game_name):
     """Factory function to get game configuration"""
     return GameConfig(game_name)
-

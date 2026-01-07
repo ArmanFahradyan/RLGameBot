@@ -10,6 +10,7 @@ from src.mcts import MCTS, MCTSNode
 from src.config import Config
 from src.connect_four import ConnectFour
 from src.game import TicTacToe
+from src.othello import Othello
 
 
 def print_board_tictactoe(board):
@@ -32,6 +33,23 @@ def print_board_connect_four(board):
     for row in range(ConnectFour.ROWS):
         print(f"{row}|" + " ".join(symbols[board_2d[row, col]] for col in range(ConnectFour.COLS)) + "|")
     print("  " + "-" * 13)
+    print()
+
+
+def print_board_othello(board):
+    """Print Othello board"""
+    board_2d = board.reshape(Othello.ROWS, Othello.COLS)
+    symbols = {1: "●", -1: "○", 0: "."}
+    
+    print("\n    0 1 2 3 4 5 6 7")
+    print("  +" + "-" * 17 + "+")
+    for row in range(Othello.ROWS):
+        print(f" {row}| " + " ".join(symbols[board_2d[row, col]] for col in range(Othello.COLS)) + " |")
+    print("  +" + "-" * 17 + "+")
+    
+    black = np.sum(board == 1)
+    white = np.sum(board == -1)
+    print(f"  Score: ● Black: {black}  ○ White: {white}")
     print()
 
 
@@ -72,13 +90,16 @@ def main():
     print("Available games:")
     print("  1. TicTacToe")
     print("  2. Connect Four")
+    print("  3. Othello")
     
-    choice = input("\nSelect game (1 or 2): ").strip()
+    choice = input("\nSelect game (1, 2, or 3): ").strip()
     
     if choice == "1":
         game_name = "tictactoe"
     elif choice == "2":
         game_name = "connect_four"
+    elif choice == "3":
+        game_name = "othello"
     else:
         print("Invalid choice. Exiting.")
         sys.exit(1)
@@ -111,8 +132,10 @@ def main():
     # Print initial board
     if game_name == "tictactoe":
         print_board_tictactoe(state[0])
-    else:
+    elif game_name == "connect_four":
         print_board_connect_four(state[0])
+    else:
+        print_board_othello(state[0])
 
     # Game loop
     while not game_config.game.is_terminal(state):
@@ -133,8 +156,10 @@ def main():
         # Print updated board
         if game_name == "tictactoe":
             print_board_tictactoe(state[0])
-        else:
+        elif game_name == "connect_four":
             print_board_connect_four(state[0])
+        else:
+            print_board_othello(state[0])
 
     # Show result
     result = game_config.game.outcome(state)

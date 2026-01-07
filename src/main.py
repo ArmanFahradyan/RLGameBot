@@ -16,13 +16,16 @@ def main():
     print("Available games:")
     print("  1. TicTacToe")
     print("  2. Connect Four")
+    print("  3. Othello")
     
-    choice = input("\nSelect game (1 or 2): ").strip()
+    choice = input("\nSelect game (1, 2, or 3): ").strip()
     
     if choice == "1":
         game_name = "tictactoe"
     elif choice == "2":
         game_name = "connect_four"
+    elif choice == "3":
+        game_name = "othello"
     else:
         print("Invalid choice. Exiting.")
         sys.exit(1)

@@ -1,6 +1,4 @@
 # Model files
-*.pth
-*.pt
 *.ckpt
 
 # Python cache
@@ -23,3 +21,7 @@ ENV/
 # OS
 .DS_Store
 Thumbs.db
+
+# Data/Logs
+*.csv
+*.log
